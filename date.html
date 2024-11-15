@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Date Planner</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8e1f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .scrollable-container {
+      max-height: 90vh;
+      overflow-y: auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      width: 300px;
+      text-align: center;
+      animation: fadeIn 1s ease-in;
+    }
+
+    h1 {
+      color: #ff66b2;
+    }
+
+    button {
+      padding: 15px;
+      font-size: 16px;
+      background-color: #ff66b2;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #ff3385;
+      transform: scale(1.1);
+    }
+
+    .heart-btn {
+      font-size: 24px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .movie-img, .food-img {
+      width: 100%;
+      border-radius: 8px;
+      margin-top: 15px;
+    }
+
+    .slider {
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    .slider-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    .confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    .confetti div {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: hsl(0, 100%, 50%);
+      animation: fall 3s ease-in-out infinite;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-100vh) rotate(0deg); }
+      100% { transform: translateY(100vh) rotate(360deg); }
+    }
+
+    .emoji {
+      font-size: 30px;
+      position: absolute;
+      top: 10%;
+      left: 10%;
+      z-index: 10000;
+      animation: emojiFloat 3s ease-in-out infinite;
+    }
+
+    @keyframes emojiFloat {
+      0% { transform: translateY(-50%) rotate(0deg); }
+      50% { transform: translateY(0%) rotate(360deg); }
+      100% { transform: translateY(-50%) rotate(720deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="scrollable-container">
+    <h1>Plan Your Date</h1>
+
+    <div id="askDate" class="step">
+      <p>Would you like to go on a date?</p>
+      <button class="heart-btn" onclick="showMovieChoices(true)">❤️ Yes</button>
+      <button class="heart-btn" onclick="showMovieChoices(false)">💔 No</button>
+    </div>
+
+    <div id="movieChoices" class="step hidden">
+      <p>Choose a movie:</p>
+      <button class="heart-btn" onclick="askDateTime('Avengers: Endgame', 'https://upload.wikimedia.org/wikipedia/en/0/0d/Avengers_Endgame_poster.jpg')">
+        🎬 Avengers: Endgame
+      </button>
+      <button class="heart-btn" onclick="askDateTime('Spider-Man 3', 'https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Spider-Man_3_poster.jpg/220px-Spider-Man_3_poster.jpg')">
+        🎬 Spider-Man 3
+      </button>
+      <button class="heart-btn" onclick="askDateTime('The Dark Knight', 'https://upload.wikimedia.org/wikipedia/en/thumb/8/83/The_Dark_Knight.jpg/220px-The_Dark_Knight.jpg')">
+        🎬 The Dark Knight
+      </button>
+      <button class="heart-btn" onclick="askDateTime('Inception', 'https://upload.wikimedia.org/wikipedia/en/7/7f/Inception_ver3.jpg')">
+        🎬 Inception
+      </button>
+      <button class="heart-btn" onclick="askDateTime('The Matrix', 'https://upload.wikimedia.org/wikipedia/en/thumb/c/c1/The_Matrix_Poster.jpg/220px-The_Matrix_Poster.jpg')">
+        🎬 The Matrix
+      </button>
+    </div>
+
+    <div id="movieImage" class="step hidden">
+      <img id="movieImageDisplay" src="" alt="Movie" class="movie-img">
+    </div>
+
+    <div id="askDateTime" class="step hidden">
+      <p>When are you available for the date?</p>
+      <input type="date" id="dateInput" class="form-control" />
+      <button class="heart-btn" onclick="askFoodChoice()">Next</button>
+    </div>
+
+    <div id="askFood" class="step hidden">
+      <p>What type of food would you prefer?</p>
+      <button class="heart-btn" onclick="askFood('Pizza')">🍕 Pizza</button>
+      <button class="heart-btn" onclick="askFood('Sushi')">🍣 Sushi</button>
+      <button class="heart-btn" onclick="askFood('Burgers')">🍔 Burgers</button>
+      <button class="heart-btn" onclick="askFood('Fries')">🍟 Fries</button>
+      <button class="heart-btn" onclick="askFood('Salad')">🥗 Salad</button>
+    </div>
+
+    <div id="askDrinks" class="step hidden">
+      <p>What drinks would you prefer?</p>
+      <button class="heart-btn" onclick="submitForm('Water')">💧 Water</button>
+      <button class="heart-btn" onclick="submitForm('Soda')">🥤 Soda</button>
+      <button class="heart-btn" onclick="submitForm('Juice')">🍹 Juice</button>
+      <button class="heart-btn" onclick="submitForm('Coffee')">☕ Coffee</button>
+      <button class="heart-btn" onclick="submitForm('Tea')">🍵 Tea</button>
+    </div>
+
+    <div id="askExcitement" class="step hidden">
+      <p>How excited are you for this date? (1 - 100)</p>
+      <div class="slider-container">
+        <span>1</span>
+        <input type="range" min="1" max="100" value="50" class="slider" id="excitementRange" onchange="updateExcitementValue()">
+        <span>100</span>
+      </div>
+      <p>Excitement: <span id="excitementValue">50</span>%</p>
+      <button class="heart-btn" onclick="showCelebration()">Submit</button>
+    </div>
+
+    <div id="thankYou" class="step hidden">
+      <p>Thank you for planning your date!</p>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS and Popper.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+  <script>
+    let movieChoice = '';
+    let date = '';
+    let foodChoice = '';
+    let drinkChoice = '';
+    let excitement = 50; // Default excitement value
+
+    function showMovieChoices(choice) {
+      document.getElementById('askDate').classList.add('hidden');
+      if (choice) {
+        document.getElementById('movieChoices').classList.remove('hidden');
+      } else {
+        document.getElementById('thankYou').classList.remove('hidden');
+      }
+    }
+
+    function askDateTime(movie, imageUrl) {
+      movieChoice = movie;
+      document.getElementById('movieChoices').classList.add('hidden');
+      document.getElementById('movieImage').classList.remove('hidden');
+      document.getElementById('movieImageDisplay').src = imageUrl;
+      document.getElementById('askDateTime').classList.remove('hidden');
+    }
+
+    function askFoodChoice() {
+      date = document.getElementById('dateInput').value;
+      document.getElementById('askDateTime').classList.add('hidden');
+      document.getElementById('askFood').classList.remove('hidden');
+    }
+
+    function askFood(choice) {
+      foodChoice = choice;
+      document.getElementById('askFood').classList.add('hidden');
+      document.getElementById('askDrinks').classList.remove('hidden');
+    }
+
+    function submitForm(drink = '') {
+      if (drink) {
+        drinkChoice = drink;
+      }
+      document.getElementById('askDrinks').classList.add('hidden');
+      document.getElementById('askExcitement').classList.remove('hidden');
+    }
+
+    function updateExcitementValue() {
+      excitement = document.getElementById('excitementRange').value;
+      document.getElementById('excitementValue').textContent = excitement;
+    }
+
+    function showCelebration() {
+      document.getElementById('askExcitement').classList.add('hidden');
+      document.getElementById('thankYou').classList.remove('hidden');
+      console.log(`Movie: ${movieChoice}, Date: ${date}, Food: ${foodChoice}, Drink: ${drinkChoice}, Excitement: ${excitement}%`);
+      createConfetti();
+      createEmojis();
+    }
+
+    function createConfetti() {
+      const confettiContainer = document.createElement('div');
+      confettiContainer.classList.add('confetti');
+      document.body.appendChild(confettiContainer);
+
+      for (let i = 0; i < 100; i++) {
+        const confetti = document.createElement('div');
+        confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+        confetti.style.top = `${Math.random() * 100}vh`;
+        confetti.style.left = `${Math.random() * 100}vw`;
+        confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+        confettiContainer.appendChild(confetti);
+      }
+
+      setTimeout(() => {
+        document.body.removeChild(confettiContainer);
+      }, 5000);
+    }
+
+    function createEmojis() {
+      const emojis = ['🎉', '🎊', '💜', '🥰', '🎈', '❣️', '💞', '❤️', '💘', '💕', '💓', '❣️', '💋', '💋', '♥️'];
+      emojis.forEach(emoji => {
+        const emojiElement = document.createElement('div');
+        emojiElement.classList.add('emoji');
+        emojiElement.textContent = emoji;
+        emojiElement.style.left = `${Math.random() * 100}vw`;
+        emojiElement.style.top = `${Math.random() * 100}vh`;
+        document.body.appendChild(emojiElement);
+
+        setTimeout(() => {
+          emojiElement.remove();
+        }, 3000);
+      });
+    }
+  </script>
+</body>
+</html>
