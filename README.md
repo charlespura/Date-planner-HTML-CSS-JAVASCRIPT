@@ -1,6 +1,8 @@
 # Little Date ♡
 
-A modern, responsive date planner rebuilt from `date.html` with React, TypeScript, Vite, and Tailwind CSS 4.
+A modern, responsive date planner built with **React, TypeScript, Vite, and Tailwind CSS 4**.
+
+The application source is in [`src/App.tsx`](src/App.tsx), with the React entry point in [`src/main.tsx`](src/main.tsx). `index.html` is the small HTML entry document; the interactive application is written in TypeScript.
 
 ## Features
 
@@ -9,7 +11,7 @@ A modern, responsive date planner rebuilt from `date.html` with React, TypeScrip
 - Download the completed plan as a text file or start again.
 - Warm cream and coral design, real movie posters, animated transitions, and mobile layouts.
 - Keyboard focus indicators, accessible form labels, and reduced-motion support.
-- No backend, API keys, or sign-up. Posters load from TMDB's image CDN and need an internet connection; decorative artwork appears if a poster fails to load. Plans live in memory and reset on refresh; download to keep one.
+- No backend, API keys, or sign-up. Posters are bundled in `public/posters/` and served from your own site, with decorative artwork as a fallback. Plans live in memory and reset on refresh; download to keep one.
 
 ## Run locally
 
@@ -49,10 +51,13 @@ src/main.tsx                   React entry point
 index.html                     Vite HTML entry
 vite.config.ts                 React + Tailwind plugins; relative asset paths
 .github/workflows/deploy.yml    GitHub Pages build and deployment
-date.html                      Original version, kept for reference
 ```
 
-Edit the `movies`, `foods`, and `drinks` lists in `src/App.tsx` to customize choices. Add matching poster filenames in `src/posters.ts`. Theme colors and animation rules are in `src/index.css`. Promotional posters are hosted by [The Movie Database](https://www.themoviedb.org/); images belong to their respective rights holders. This project is not endorsed or certified by TMDB.
+Edit the `movies`, `foods`, and `drinks` lists in `src/App.tsx` to customize choices. Put poster files in `public/posters/` and add matching filenames in `src/posters.ts`. Vite copies these images into the production build, and relative URLs support GitHub Pages repository paths. Theme colors and animation rules are in `src/index.css`. See `public/posters/SOURCES.md` for poster source pages and image credits; images belong to their respective rights holders.
+
+## GitHub language statistics
+
+`.gitattributes` identifies `.ts` and `.tsx` files as TypeScript and excludes generated build output and dependencies from language statistics. CSS and the HTML entry document keep their actual language classifications. Push these files to the repository's default branch; GitHub recalculates its language bar in the background, so the old HTML percentage may remain briefly. The language bar does not affect source visibility: visitors can open the TypeScript files in `src/` directly.
 
 ## References
 

@@ -1,0 +1,9 @@
+# Classify the application source explicitly for GitHub language statistics.
+*.ts linguist-language=TypeScript linguist-detectable=true
+*.tsx linguist-language=TypeScript linguist-detectable=true
+*.css linguist-language=CSS linguist-detectable=true
+
+# Generated output and dependencies are not application source.
+dist/** linguist-generated=true
+node_modules/** linguist-vendored=true
+package-lock.json linguist-generated=true
