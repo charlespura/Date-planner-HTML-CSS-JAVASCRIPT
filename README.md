@@ -42,6 +42,8 @@ The workflow installs locked dependencies, checks TypeScript, builds, and deploy
 
 No site has been published simply by adding the workflow; GitHub runs it after you push and enable Pages.
 
+If **Configure Pages** fails with **Get Pages site failed / Not Found**, check **Settings → Pages → Source → GitHub Actions** and save that setting before running the workflow again. The build job needs `pages: read` to read the site's configuration; the deploy job needs `pages: write` and `id-token: write`. These permissions are included in the workflow. After changing the workflow, push a new commit so GitHub runs the corrected version; re-running an older run uses its original workflow.
+
 ## Project structure
 
 ```text
